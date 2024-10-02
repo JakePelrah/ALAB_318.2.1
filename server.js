@@ -5,6 +5,7 @@ const app = express();
 
 app.use(express.static('public'))
 app.use(express.json());
+app.use(express.urlencoded())
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
@@ -32,22 +33,22 @@ app.post('/coord', async (req, res) => {
   const { lat, lng } = req.body
   req.session.coordinates = [lat, lng] || []
 
-  
-try{
 
-  const pointData = await getPointData(lat, lng)
+  try {
 
-  const { city, state } = pointData?.properties?.relativeLocation?.properties || {}
-  req.session.location = { city, state }
+    const pointData = await getPointData(lat, lng)
 
-  const { cwa, gridX, gridY } = pointData.properties
-  const weatherData = await getForecastData(cwa, gridX, gridY)
-  req.session.periods = weatherData?.properties?.periods || []
+    const { city, state } = pointData?.properties?.relativeLocation?.properties || {}
+    req.session.location = { city, state }
 
-  res.redirect('/')
-}catch{
-  console.log('area not available')
-}
+    const { cwa, gridX, gridY } = pointData.properties
+    const weatherData = await getForecastData(cwa, gridX, gridY)
+    req.session.periods = weatherData?.properties?.periods || []
+
+    res.redirect('/')
+  } catch {
+    console.log('area not available')
+  }
 
 })
 
@@ -55,7 +56,7 @@ try{
 app.get('/tenDay', (req, res) => {
   const { coordinates, location, periods } = req.session
   res.render('tenDay', {
-    links:[],
+    links: [],
     lat: coordinates?.[0] || null,
     lng: coordinates?.[1] || null,
     city: location?.city || null,
@@ -65,11 +66,38 @@ app.get('/tenDay', (req, res) => {
 })
 
 
-app.get('/download/:city/:state', (req, res)=>{
+app.get('/download/:city/:state', (req, res) => {
   console.log(req.params)
-  res.download('public/weatherStation.jpg',function (error) {
+  res.download('public/weatherStation.jpg', function (error) {
     console.log("Error : ", error)
-});
+  });
+})
+
+app.post('/submit', (req, res) => {
+
+  const url = `https://nominatim.openstreetmap.org/search?q=${req.body.location}&format=json`
+  fetch(url).then(res => res.json()).then(async data => {
+
+    const { lat, lon } = data[0]
+    req.session.coordinates = [lat, lon] || []
+
+    try {
+
+      const pointData = await getPointData(lat, lon)
+
+      const { city, state } = pointData?.properties?.relativeLocation?.properties || {}
+      req.session.location = { city, state }
+
+      const { cwa, gridX, gridY } = pointData.properties
+      const weatherData = await getForecastData(cwa, gridX, gridY)
+      req.session.periods = weatherData?.properties?.periods || []
+
+      res.redirect('/')
+    } catch {
+      console.log('area not available')
+    }
+
+  })
 })
 
 // 404 page

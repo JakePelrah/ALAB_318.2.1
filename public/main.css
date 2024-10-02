@@ -47,7 +47,7 @@ th{
     border-radius: 1em;
 }
 
-#download-button{
+.btn{
     background-color: var(--text-color);
     color: white;
 }

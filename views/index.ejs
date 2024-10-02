@@ -46,11 +46,20 @@
 
   </script>
 
+  <form action="/submit" method="post">
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label text-white">Get weather by city and state.</label>
+      <input id="location" name="location" type="text" class="form-control" placeholder="Worcester, MA" required>
+    </div>
+    <button type="submit" class="btn delete-button">Get forecast</button>
+  </form>
+
   <div class="d-flex justify-content-center">
     <% if (periods.length> 0) { %>
       <%- include('table'), {periods, city, state} %>
         <% } %>
   </div>
+
 
   <div class="d-flex justify-content-center my-5">
     <div class="d-flex flex-column align-items-center">
