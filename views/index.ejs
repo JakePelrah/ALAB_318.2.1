@@ -15,14 +15,15 @@
 </head>
 
 
-<body class="container-fluid">
+<body class="container">
 
   <header>
     <%- include('navbar')%>
   </header>
 
+  <h6 class="text-white text-center mt-5">Click location to get the weather</h6>
+  
   <div id="map"></div>
-  <h6 class="text-white text-center">Click map to get current weather</h6>
 
 
   <script>
@@ -54,6 +55,7 @@
   <div class="d-flex justify-content-center my-5">
     <div class="d-flex flex-column align-items-center">
       <img class="" id="main-image" src="weatherStation.jpg">
+      <figcaption>Fig.1 - The Blue Hill Meteorological Observatory in Milton, Massachusetts.</figcaption>
       <button id="download-button" class="btn mt-3" download="">Download Image</button>
   
     </div>

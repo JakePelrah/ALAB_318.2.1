@@ -1,46 +1,66 @@
+:root{
+    --text-color:#20a6ee;
+    --text-hover-color:#7cb8d8;
+
+}
+
 body{
     background-color: #333;
 }
+
 #map {
-    margin-top: 1em;
-    height: 500px;
+    height: 50em;
 }
 
-td,
-th,
 table {
-    border: 1px solid rgb(255, 255, 255);
+    border: 1px solid var(--text-color);
     background-color: #333 !important;
     color: white !important;
+}
+
+td{
+    border: 1px solid var(--text-color);
+}
+th{
+    background-color: var(--text-color) !important;
+    color: white !important;
+    border: 1px solid white;
 }
 
 .nav{
     background-color: #333;
 }
 .navbar{
-    border-bottom: 1px solid white !important;
+    border-bottom: 1px solid var(--text-color);
 }
 .navbar-brand{
-    color: white !important;
+    color: var(--text-color) !important;
 }
-
 .nav-link {
-    background-color: #a12d2d;
+    background-color: var(--text-color);
     color: white;
     border-radius: 1em;
-    padding: 1em;
 }
-
 .nav-link:hover{
-    background-color: #a66161;
+    background-color: var(--text-hover-color);
     color: white;
     border-radius: 1em;
 }
 
 #download-button{
-    background-color: red;
+    background-color: var(--text-color);
+    color: white;
 }
 
 #main-image{
-    width: 50%;
+    width: 100%;
+}
+
+
+figcaption{
+    background-color: var(--text-color);
+    color: white;
+    font-style: italic;
+    padding: 2px;
+    text-align: center;
 }
