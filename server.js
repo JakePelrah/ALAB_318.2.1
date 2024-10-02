@@ -13,18 +13,14 @@ app.use(session({
 app.set('view engine', 'ejs')
 
 
-const links = [
-
-]
-
 // get the homepage
 app.get('/', (req, res) => {
   const { coordinates, location, periods } = req.session
   res.render('index', {
     links: location?.city ?
       [{ href: '/tenDay', text: 'Extended Forecast' }] : [],
-    lat: coordinates?.[0] || 42,
-    lng: coordinates?.[1] || -71,
+    lat: coordinates?.[0] || 42.2626,
+    lng: coordinates?.[1] || -71.8023,
     city: location?.city || null,
     state: location?.state || null,
     periods: periods?.[0] ? [periods[0]] : []
@@ -59,13 +55,21 @@ try{
 app.get('/tenDay', (req, res) => {
   const { coordinates, location, periods } = req.session
   res.render('tenDay', {
-    links,
+    links:[],
     lat: coordinates?.[0] || null,
     lng: coordinates?.[1] || null,
     city: location?.city || null,
     state: location?.state || null,
-    periods: periods || []
+    periods: periods || [],
   })
+})
+
+
+app.get('/download/:city/:state', (req, res)=>{
+  console.log(req.params)
+  res.download('public/weatherStation.jpg',function (error) {
+    console.log("Error : ", error)
+});
 })
 
 // 404 page
