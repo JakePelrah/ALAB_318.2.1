@@ -1,0 +1,22 @@
+#map {
+    height: 500px;
+}
+
+td,
+th,
+table {
+    border: 1px solid black;
+}
+
+.nav-link {
+    background-color: rgb(36, 36, 36);
+    color: white;
+    border-radius: 1em;
+}
+
+.nav-link:hover{
+    background-color: rgb(131, 131, 131);
+    color: white;
+    border-radius: 1em;
+}
+

@@ -1,19 +1,56 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>Simple Map</title>
+  <title>Weather</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
- <style>
-    #map { height: 500px; }
-  </style>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
+  
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 </head>
-<body>
-  <%- include('navbar')%>
+
+
+<body class="container-fluid">
+
+  <header>
+    <%- include('navbar')%>
+  </header>
+
   <div id="map"></div>
-  <%- include('footer')%>
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="weather.js"></script>
+
+  <script>
+    const la = '<%= lat %>'
+    const ln = '<%= lng %>'
+    let weatherMap = L.map('map').setView([la, ln], 8); // Worcester, MA
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+    }).addTo(weatherMap);
+
+    weatherMap.on('click', function (e) {
+      const { lat, lng } = e.latlng
+      fetch('coord', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lat, lng })
+      }).then(() => window.location.href = '/')
+    });
+
+  </script>
+
+  <div class="d-flex justify-content-center mt-5">
+    <% if (periods.length> 0) { %>
+      <%- include('table'), {periods, city, state} %>
+        <% } %>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
 </body>
+
 </html>
