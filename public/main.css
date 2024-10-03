@@ -51,6 +51,10 @@ th{
     background-color: var(--text-color);
     color: white;
 }
+.btn:hover{
+    background-color: #81c9ef;
+    color: white;
+}
 
 #main-image{
     width: 100%;
