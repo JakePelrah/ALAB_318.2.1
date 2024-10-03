@@ -29,7 +29,7 @@
   <script>
     const la = '<%= lat %>'
     const ln = '<%= lng %>'
-    let weatherMap = L.map('map').setView([la, ln], 13); // Worcester, MA
+    let weatherMap = L.map('map').setView([la, ln], 10); // Worcester, MA
     L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
       maxZoom: 20,
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3']

@@ -4,8 +4,8 @@ import session from 'express-session';
 const app = express();
 
 app.use(express.static('public'))
+app.use(express.urlencoded({extended:true}))
 app.use(express.json());
-app.use(express.urlencoded())
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
@@ -45,9 +45,12 @@ app.post('/coord', async (req, res) => {
     const weatherData = await getForecastData(cwa, gridX, gridY)
     req.session.periods = weatherData?.properties?.periods || []
 
-    res.redirect('/')
+    
   } catch {
     console.log('area not available')
+  }
+  finally{
+    res.redirect('/')
   }
 
 })
@@ -78,6 +81,7 @@ app.post('/submit', (req, res) => {
   const url = `https://nominatim.openstreetmap.org/search?q=${req.body.location}&format=json`
   fetch(url).then(res => res.json()).then(async data => {
 
+  
     const { lat, lon } = data[0]
     req.session.coordinates = [lat, lon] || []
 
@@ -92,11 +96,14 @@ app.post('/submit', (req, res) => {
       const weatherData = await getForecastData(cwa, gridX, gridY)
       req.session.periods = weatherData?.properties?.periods || []
 
-      res.redirect('/')
     } catch {
       console.log('area not available')
     }
+    finally{
+      res.redirect('/')
 
+    }
+  
   })
 })
 
@@ -116,7 +123,7 @@ const pointURL = "https://api.weather.gov/points/"
 const forecastURL = "https://api.weather.gov/gridpoints/"
 
 function getPointData(lat, lng) {
-  return fetch(`${pointURL}/${lat},${lng}`)
+  return fetch(`${pointURL}${lat},${lng}`)
     .then(res => res.json())
 }
 function getForecastData(office, gridX, gridY) {
